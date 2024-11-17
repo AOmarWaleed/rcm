@@ -1,4 +1,4 @@
-import { Typography, IconButton, Toolbar, Button } from "@mui/material";
+import { Typography, IconButton, Toolbar } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { styled } from "@mui/material/styles";
@@ -6,7 +6,7 @@ import { drawerWidth } from "../../Utils/Constant";
 import { useContext } from "react";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import { ThemeContextProps, ThemeContext } from "../../Context/ThemeContext";
+import {  ThemeContext } from "../../Context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 
 interface AppBarProps extends MuiAppBarProps {
