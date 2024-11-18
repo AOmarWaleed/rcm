@@ -5,9 +5,11 @@ import {
   ReactNode,
   useEffect,
   useRef,
+  useContext,
 } from "react";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { createCustomTheme } from "../Utils/theme";
 
 export interface ThemeContextProps {
   toggleTheme: () => void;
@@ -20,11 +22,13 @@ export const ThemeContext = createContext<ThemeContextProps | undefined>(
 
 export function ThemeContextProvider({ children }: { children: ReactNode }) {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const ref = useRef(false);
+
   const [mode, setMode] = useState<"light" | "dark">(
-    prefersDarkMode && localStorage.getItem("mode") == "dark" ? "dark" : "light"
+    // lw feh dark fe el local or byfdl kda
+    prefersDarkMode || localStorage.getItem("mode") == "dark" ? "dark" : "light"
   );
 
-  const ref = useRef(false);
   useEffect(() => {
     if (!ref.current) {
       ref.current = true;
@@ -38,26 +42,26 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
   };
 
   // Memoize the theme to avoid unnecessary recalculations
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-
-          background: {
-            default: mode === "light" ? "#eee" : "#121212",
-            paper: mode === "light" ? "#f5f5f5" : "#1d1d1d",
-          },
-        },
-      }),
-    [mode]
-  );
+  const theme = useMemo(()=> createCustomTheme(mode), [mode]);
 
   return (
     <ThemeContext.Provider value={{ mode, toggleTheme }}>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </ThemeContext.Provider>
   );
+}
+
+// Custom Hook for easy usage of ThemeContext
+export function useThemeContext() {
+  const context = useContext(ThemeContext);
+
+  if (context === undefined) {
+    throw new Error(
+      "useThemeContext must be used within a ThemeContextProvider"
+    );
+  }
+
+  return context;
 }
 
 /*

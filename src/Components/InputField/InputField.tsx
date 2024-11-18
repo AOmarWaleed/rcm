@@ -31,6 +31,9 @@ export default function InputField({
   options,
   size = "small",
 }: InputProps) {
+
+
+  
   if (type === "select") {
     return (
       <Field name={name}>

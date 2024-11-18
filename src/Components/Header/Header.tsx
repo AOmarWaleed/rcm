@@ -3,11 +3,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { styled } from "@mui/material/styles";
 import { drawerWidth } from "../../Utils/Constant";
-import { useContext } from "react";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import {  ThemeContext } from "../../Context/ThemeContext";
+
 import { useNavigate } from "react-router-dom";
+import ThemeToggleButton from "../ThemeToggleButton/ThemeToggleButton";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -16,7 +14,7 @@ interface AppBarProps extends MuiAppBarProps {
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open", // Prevent forwarding 'open' prop to DOM
 })<AppBarProps>(({ theme, open }) => ({
-  // !!!!!!! 
+  // !!!!!!!
   // backgroundColor : theme.palette.primary.main ,
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(["width", "margin"], {
@@ -33,20 +31,13 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-export default function Header({
-  open,
-  setOpen,
-}: {
+interface HeaderProps {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
-  const navigateTo = useNavigate()
-  const themeContext = useContext(ThemeContext!);
-  if (!themeContext) {
-    return <>there is noe theme go check it</>; 
-  }
+  setOpen: (nextS: boolean) => void;
+}
 
-  const { mode, toggleTheme } = themeContext; // Destructure the values safely
+export default function Header({ open, setOpen }: HeaderProps) {
+  const navigateTo = useNavigate();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -67,16 +58,19 @@ export default function Header({
         >
           <MenuIcon />
         </IconButton>
-        <Typography sx={{ cursor:"pointer" }} onClick={()=> navigateTo('/')} variant="h6" noWrap component="div">
+        <Typography
+          sx={{ cursor: "pointer" }}
+          onClick={() => navigateTo("/")}
+          variant="h6"
+          noWrap
+          component="div"
+        >
           LOGO
         </Typography>
 
         {/* ! todo :- add avatar and logOut Btn  */}
         {/* <Button sx={ { ml : "auto" } } color="white">LogOut</Button> */}
-
-        <IconButton onClick={toggleTheme} sx={ { ml : "auto" } }>
-          {mode == "light" ? <LightModeIcon /> : <DarkModeIcon />}
-        </IconButton>
+        <ThemeToggleButton sx={ { ml:"auto" } } />
       </Toolbar>
     </AppBar>
   );

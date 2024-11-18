@@ -27,6 +27,7 @@ export default function MainLayout() {
         {/* !!!!! to be under the header  */}
         <DrawerHeader />
 
+        {/* !!!!PAGES */}
         <Outlet />
       </Box>
     </Box>

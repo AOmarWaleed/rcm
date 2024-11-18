@@ -71,17 +71,17 @@ const ITEMS = [
   },
 ];
 
-export default function SideBar({
-  open,
-  setOpen,
-  DrawerHeader,
-}: {
+interface SideBarProps {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpen: (nextS: boolean) => void;
   DrawerHeader: any;
-}) {
-  const navigateTo = useNavigate();  
+}
+
+export default function SideBar({ open, setOpen, DrawerHeader }: SideBarProps) {
+  const navigateTo = useNavigate();
   const theme = useTheme();
+
+  
   const handleDrawerClose = () => {
     setOpen(false);
   };
@@ -100,10 +100,15 @@ export default function SideBar({
       <Divider />
       <List>
         {ITEMS.map(({ text, icon, path }) => (
-          <ListItem onClick={()=> {
-            navigateTo(path);
-            handleDrawerClose();
-          } }  key={text} disablePadding sx={{ display: "block" }}>
+          <ListItem
+            onClick={() => {
+              navigateTo(path);
+              handleDrawerClose();
+            }}
+            key={text}
+            disablePadding
+            sx={{ display: "block" }}
+          >
             <ListItemButton
               sx={[
                 {
